@@ -1,0 +1,57 @@
+# -------------------------
+# Python
+# -------------------------
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+build/
+dist/
+wheels/
+*.egg
+*.whl
+
+# Virtual environments
+.venv/
+env/
+venv/
+
+# -------------------------
+# .NET / C#
+# -------------------------
+# Build results
+bin/
+obj/
+out/
+Debug/
+Release/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio
+.vs/
+
+# NuGet
+*.nupkg
+*.snupkg
+packages/
+*.nuget.props
+*.nuget.targets
+
+# Logs
+*.log
+Logs/
+logs/
+mysql-init/
+
+# -------------------------
+# General
+# -------------------------
+# OS generated files
+.DS_Store
+Thumbs.db
