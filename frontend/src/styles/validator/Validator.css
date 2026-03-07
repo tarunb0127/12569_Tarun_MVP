@@ -1,0 +1,221 @@
+/* ─────────────────────────────────────────
+   BASE PAGE LAYOUT
+───────────────────────────────────────── */
+.validator-page {
+  min-height: 100vh;
+  background: #F0F2F8;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 32px 24px;
+  box-sizing: border-box;
+}
+
+/* ─────────────────────────────────────────
+   UPLOAD SECTION
+───────────────────────────────────────── */
+.upload-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 56px 32px;
+  max-width: 620px;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.instant-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(37, 35, 91, 0.08);
+  color: #25235B;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 7px 16px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+
+.upload-title {
+  font-size: 36px;
+  font-weight: 800;
+  color: #25235B;
+  margin-bottom: 14px;
+  line-height: 1.2;
+}
+
+.upload-subtitle {
+  font-size: 16px;
+  color: #6b7280;
+  line-height: 1.7;
+  margin-bottom: 36px;
+}
+
+.upload-area {
+  width: 100%;
+  border: 2px dashed #C8CAE0;
+  border-radius: 20px;
+  padding: 56px 32px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  box-sizing: border-box;
+}
+
+.upload-area:hover,
+.upload-area.dragging {
+  border-color: #9D247D;
+  background: #FAF7FC;
+}
+
+.upload-icon-wrap {
+  width: 72px;
+  height: 72px;
+  border-radius: 18px;
+  background: #25235B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+  box-shadow: 0 8px 20px rgba(37, 35, 91, 0.28);
+}
+
+.upload-cta {
+  font-size: 17px;
+  color: #374151;
+  font-weight: 500;
+  margin: 0;
+}
+
+.click-text {
+  color: #9D247D;
+  font-weight: 700;
+}
+
+.file-types {
+  font-size: 13px;
+  color: #9ca3af;
+  margin: 0;
+}
+
+.instant-ready-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #f3f4f6;
+  padding: 7px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  color: #374151;
+  margin-top: 4px;
+}
+
+.green-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+/* ─────────────────────────────────────────
+   ANALYZING SECTION
+───────────────────────────────────────── */
+.analyzing-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 32px;
+  max-width: 440px;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  gap: 8px;
+}
+
+.analyzing-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 18px;
+  background: #25235B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+  box-shadow: 0 8px 22px rgba(37, 35, 91, 0.3);
+}
+
+.analyzing-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #25235B;
+  margin: 0 0 6px;
+}
+
+.analyzing-subtitle {
+  font-size: 14px;
+  color: #9ca3af;
+  margin: 0 0 20px;
+}
+
+.steps-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.step-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-radius: 12px;
+  background: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  border: 1px solid #E2E4EF;
+  transition: background 0.3s, border-color 0.3s;
+}
+
+.step-item.active {
+  background: rgba(37, 35, 91, 0.06);
+  border-color: #25235B;
+  color: #25235B;
+  font-weight: 600;
+}
+
+.step-icon {
+  display: flex;
+  align-items: center;
+}
+
+/* ─────────────────────────────────────────
+   SPINNER ANIMATION
+───────────────────────────────────────── */
+.main-spinner,
+.spin-icon {
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ─────────────────────────────────────────
+   RESPONSIVE
+───────────────────────────────────────── */
+@media (max-width: 480px) {
+  .upload-title { font-size: 26px; }
+  .upload-area  { padding: 36px 20px; }
+}
