@@ -6,7 +6,7 @@ OLLAMA_URL = os.getenv(
     "http://ollama:11434/api/generate"
 )
 
-MODEL_NAME = "mistral"
+MODEL_NAME = "tinyllama"
 
 
 async def generate_llm_feedback(prompt: str) -> str:

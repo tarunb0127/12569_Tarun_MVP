@@ -6,7 +6,6 @@ from contextlib import asynccontextmanager
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.v1.photo import router as photo_router
-from app.core.model_loader import load_models
 from app.core.logging_config import setup_logging, get_logger
 from app.core.logging_middleware import LoggingMiddleware
 
@@ -26,12 +25,7 @@ async def lifespan(app: FastAPI):
     logger.info("Starting AI Profile Photo Validator service...")
     start_time = time.time()
 
-    try:
-        load_models()
-        logger.info("RetinaFace model warm-up completed.")
-    except Exception as e:
-        logger.exception("Model warm-up failed.")
-        raise e
+  
 
     duration = round((time.time() - start_time) * 1000, 2)
     logger.info(f"Application startup completed in {duration} ms")

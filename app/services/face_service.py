@@ -1,8 +1,11 @@
-from deepface import DeepFace
 import cv2
+import mediapipe as mp
 from app.core.logging_config import get_logger
 
 logger = get_logger("face_service")
+
+mp_face = mp.solutions.face_detection
+face_detector = mp_face.FaceDetection(model_selection=1, min_detection_confidence=0.5)
 
 
 def detect_face(image_path: str) -> dict:
@@ -15,31 +18,38 @@ def detect_face(image_path: str) -> dict:
         logger.error("Image could not be read")
         return {"valid": False, "error": "Image not readable"}
 
-    try:
-        detections = DeepFace.extract_faces(
-            img_path=image_path,
-            detector_backend="retinaface",
-            enforce_detection=False,
-            align=False
-        )
+    rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-        if len(detections) != 1:
-            logger.warning(f"Invalid face count: {len(detections)}")
-            return {"valid": False, "faces_detected": int(len(detections))}
+    results = face_detector.process(rgb)
 
-        face = detections[0]
-        confidence = float(face.get("confidence", 0.0))
+    if not results.detections:
+        logger.warning("No face detected")
+        return {"valid": False, "faces_detected": 0}
 
-        logger.info(f"Face detected successfully | Confidence: {confidence}")
+    if len(results.detections) != 1:
+        logger.warning(f"Invalid face count: {len(results.detections)}")
+        return {"valid": False, "faces_detected": len(results.detections)}
 
-        return {
-            "valid": True,
-            "faces_detected": 1,
-            "facial_area": face["facial_area"],
-            "confidence": confidence,
-            "image": image
-        }
+    detection = results.detections[0]
+    bbox = detection.location_data.relative_bounding_box
 
-    except Exception:
-        logger.exception("Face detection failed")
-        return {"valid": False, "error": "Face detection error"}
+    h, w, _ = image.shape
+
+    facial_area = {
+        "x": int(bbox.xmin * w),
+        "y": int(bbox.ymin * h),
+        "w": int(bbox.width * w),
+        "h": int(bbox.height * h),
+    }
+
+    confidence = detection.score[0]
+
+    logger.info(f"Face detected | Confidence: {confidence}")
+
+    return {
+        "valid": True,
+        "faces_detected": 1,
+        "facial_area": facial_area,
+        "confidence": confidence,
+        "image": image
+    }

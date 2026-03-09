@@ -25,5 +25,73 @@ services:
     depends_on:
       - ollama
 
+  mysql:
+    image: mysql:8.0
+    container_name: eepz-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: eepzdb
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql-init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping --silent --protocol=TCP -h localhost -uroot -proot"]
+      interval: 10s
+      timeout: 20s
+      retries: 10
+      start_period: 30s
+    networks:
+      - photo-validator-network
+
+  mongodb:
+    image: mongo:7
+    container_name: eepz-mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - photo-validator-network
+
+  auth-api:
+    build: ./Relevantz.PhotoValidator.AuthApi
+    container_name: photovalidator-auth-api
+    restart: always
+    ports:
+      - "5101:5101"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=eepz-mysql;Database=eepzdb;User=root;Password=root;
+      - ASPNETCORE_URLS=http://+:5101
+      - MongoDbSettings__ConnectionString=mongodb://eepz-mongodb:27017
+      - MongoDbSettings__DatabaseName=EEPZFileStorage
+      - MongoDbSettings__ProfileImagesCollectionName=ProfileImages
+    depends_on:
+      mysql:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+    volumes:
+      - ./logs:/app/Logs
+    networks:
+      - photo-validator-network
+
+
 volumes:
   ollama_data:
+  mysql_data:
+  mongodb_data:
+
+networks:
+  photo-validator-network:
+    driver: bridge
