@@ -1,21 +1,31 @@
 import React, { useRef, useState } from 'react';
-import { Upload, Zap } from 'lucide-react';
+import { Upload, Zap, FileImage, X } from 'lucide-react';
 import '../../styles/validator/UploadSection.css';
 
 const UploadSection = ({ onUpload }) => {
   const fileInputRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    if (file) onUpload(file);
+    if (file) setSelectedFile(file);
   };
 
   const handleDrop = (e) => {
     e.preventDefault();
     setIsDragging(false);
     const file = e.dataTransfer.files[0];
-    if (file) onUpload(file);
+    if (file) setSelectedFile(file);
+  };
+
+  const handleRemove = () => {
+    setSelectedFile(null);
+    fileInputRef.current.value = "";
+  };
+
+  const handleAnalyze = () => {
+    if (selectedFile) onUpload(selectedFile);
   };
 
   return (
@@ -27,9 +37,10 @@ const UploadSection = ({ onUpload }) => {
       <h1 className="upload-title">Validate Your Profile Photo</h1>
       <p className="upload-subtitle">
         Get instant professional feedback on your photo. Analyze<br />
-        brightness, clarity, face detection, and orientation and get AI - Powered insights.
+        brightness, clarity, face detection, and orientation and get AI-Powered insights.
       </p>
 
+      {/* ── Upload Area ── */}
       <div
         className={`upload-area ${isDragging ? 'dragging' : ''}`}
         onClick={() => fileInputRef.current.click()}
@@ -59,6 +70,23 @@ const UploadSection = ({ onUpload }) => {
           Instant analysis ready
         </div>
       </div>
+
+      {/* ── File Name + Analyze Button ── */}
+      {selectedFile && (
+        <div className="file-selected-row">
+          <FileImage size={16} color="#6366f1" />
+          <span className="selected-filename">{selectedFile.name}</span>
+          <button className="remove-btn" onClick={handleRemove}>
+            <X size={14} />
+          </button>
+
+          <button className="analyze-btn" onClick={handleAnalyze}>
+            <Zap size={15} />
+            Analyze Photo
+          </button>
+        </div>
+      )}
+
     </div>
   );
 };
