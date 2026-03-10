@@ -3,10 +3,10 @@ import httpx
 
 OLLAMA_URL = os.getenv(
     "OLLAMA_URL",
-    "http://ollama:11434/api/generate"
+    "http://localhost:11434/api/generate"
 )
 
-MODEL_NAME = "tinyllama"
+MODEL_NAME = "mistral"
 
 
 async def generate_llm_feedback(prompt: str) -> str:

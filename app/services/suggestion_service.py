@@ -21,22 +21,24 @@ async def generate_suggestions(validation_response: dict) -> str:
     ])
 
     prompt = f"""
-Analyze the following profile photo evaluation metrics:
+You are a professional profile photo consultant.
 
+Analyze the following image quality metrics and provide improvement feedback.
+
+Metrics:
 {metric_summary}
 
-Provide exactly 5 improvement suggestions.
+Instructions:
+- Only focus on the metrics provided.
+- Do not mention scores or numbers.
+- Do not repeat metric names directly.
+- Do not add introductions or conclusions.
+- Do not mention LinkedIn or any platform.
+- Provide exactly 4 to 5 clear, constructive sentences.
+- Each sentence must describe one improvement suggestion.
 
-Requirements:
-- Focus only on the issues reflected in the metrics.
-- Do not mention scores, numbers, or metric names.
-- Do not add any introduction or conclusion.
-- Do not reference any platform.
-- Each suggestion must be a single clear sentence.
-- Return the suggestions as separate bullet points.
-- Start each line with "- ".
-
-Output only the bullet points.
+Now provide the feedback:
 """
+
 
     return await generate_llm_feedback(prompt)
